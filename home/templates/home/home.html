@@ -24,29 +24,96 @@
                 <h1 class = "page-head">Data sheet</h1>
             
             </div>
-            <div class = "home-content">
-                
-                <input id = "key" class = "search-input" type = "text">
-                                
             
-            </div>
-            <div class = "home-content">
-                <div style = "display:inline-block;width:90%;">
-                <table id = "search-table">
-                    <tr>
-                        <td>
-                            code
-                        </td>
-                        <td>
-                            descr
-                        </td>
-                        <td>
-                            loc
-                        </td>
+            <div>
+
+                <table id = "table">
+
+                    <tr><!--L-->
+                        <td>46L</td>
+                        <td>44L</td>
+                        <td>42L</td>
+                        <td>40L</td>
+                        <td>38L</td>
+                        <td>36L</td>
+                        <td>34L</td>
+                        <td>32L</td>
+                        <td>30L</td>
+                        <td>28L</td>
+                        <td>26L</td>
                     </tr>
+
+                    <tr><!--K-->
+                        <td>46K</td>
+                        <td>44K</td>
+                        <td>42K</td>
+                        <td>40K</td>
+                        <td>38K</td>
+                        <td>36K</td>
+                        <td>34K</td>
+                        <td>32K</td>
+                        <td>30K</td>
+                        <td>28K</td>
+                        <td>26K</td>
+                    </tr>
+                    <tr><!--J-->
+                        <td>46J</td>
+                        <td>44J</td>
+                        <td>42J</td>
+                        <td>40J</td>
+                        <td>38J</td>
+                        <td>36J</td>
+                        <td>34J</td>
+                        <td>32J</td>
+                        <td>30J</td>
+                        <td>28J</td>
+                        <td>26J</td>
+                    </tr>
+                    <tr><!--H-->
+                        <td>46H</td>
+                        <td>44H</td>
+                        <td>42H</td>
+                        <td>40H</td>
+                        <td>38H</td>
+                        <td>36H</td>
+                        <td>34H</td>
+                        <td>32H</td>
+                        <td>30H</td>
+                        <td>28H</td>
+                        <td>26H</td>
+                    </tr>
+                    <tr><!--G-->
+                        <td>46G</td>
+                        <td>44G</td>
+                        <td>42G</td>
+                        <td>40G</td>
+                        <td>38G</td>
+                        <td>36G</td>
+                        <td>34G</td>
+                        <td>32G</td>
+                        <td>30G</td>
+                        <td>28G</td>
+                        <td>26G</td>
+                    </tr>
+                    <tr><!--F-->
+                        <td>46F</td>
+                        <td>44F</td>
+                        <td>42F</td>
+                        <td>40F</td>
+                        <td>38F</td>
+                        <td>36F</td>
+                        <td>34F</td>
+                        <td>32F</td>
+                        <td>30F</td>
+                        <td>28F</td>
+                        <td>26F</td>
+                    </tr>
+
                 </table>
-                </div>
+
             </div>
+
+
         
         </div>
     
@@ -55,109 +122,25 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
- $(document).ready( function() {
-    
-    
-    $('#key').on( "keyup", function() {      
-        console.log("got key up");
-        
-        var ref = $('#key').val();
-        
-        var sref = 1;
-        
-        
-        $.get("http://94.10.26.6:5120/getres2/" + ref + "/" + sref).done(function (data) {
-            
-            var obj = data  
-            
-            
-            var tbl=$("<table/>").attr("id","mytable");
-            $(tbl).css("padding", "20px");
+items = [
+    {item: "wallboard", x: 1, y: 2},
+    {item: "bituthene", x: 8, y: 4},
+];
 
-            $("#search-table tr").remove(); 
-              
-                var tr2="<tr class ='trs'>";
-            
-                var th1="<td>"+ "Code" +"</td>";
-                var th2="<td>"+ "Supplier" +"</td>";
-                var th3="<td>"+ "Description" +"</td>";
-               
-                var th5="<td>"+ "Pick" +"</td>";
-                var th6="<td>"+ "Bulk" +"</td>";
-                var th7="<td>"+ "Shelf" +"</td></tr>";
-                
-                $("#search-table").append(tr2 + th1 + th2 + th3 + th5 + th6 + th7); 
-           
-            
-             for(i in obj)
-            {
-                var tr = "<tr class ='trs' name = "+ obj[i].unid +">";
-                var test = obj[i].name1;
-                
-                
-                var td1="<td>" +obj[i].code + "</td>";
-                
-                var td2="<td>"+obj[i].supplier+"</td>";
-                var td3="<td>"+test+ "<br>" + obj[i].mesures + "</td>";
-                
-                var td5="<td class = 'lpickb'> <p class = 'lpickbp'>"+obj[i].pick+ "</p><input class = 'lpickc' type = 'text' value = '" + obj[i].pick + "'></input>" + "</td>";
-                
-                
-                
-                var td6="<td>"+obj[i].bulk+"</td>";
-                var td7="<td>"+obj[i].shelf+"</td></tr>";
-        
-               $("#search-table").append(tr + td1 + td2 + td3 + td5 + td6 + td7); 
-        
-            }
-            
-            var my_table = document.getElementById("search-table");
-            var td = my_table.getElementsByTagName("td"); 
-            var trs = my_table.getElementsByTagName("tr"); 
-            var tblen = my_table.rows.length - 1;
-            
-            $(td).css("padding", "5px");
-            $(td).css("font-size", fsize);
-            
-            $(".lpickb").click(function(){
-                $(".lpickc").css("display", "none");
-                var input = $(this).find("input");
-                $(input).css("display", "block");
-                var parent = $(this).parent()
-                
-                                   
-                
-                
-            }); 
-            $(function () {
+items.forEach(({item, x, y}) => {
+    var row = document.querySelectorAll('tr')[y];
+    console.log(y)
+    var cell = row.querySelectorAll('td')[x];
+    console.log(x)
+    cell.innerHTML = item;   
     
-                $('.lpickc').focusout('click', function() {
-                    var value = $(this).val();
-                    
-                    $(this).hide();
-                    
-                    var parent = $(this).parent();
-                    var child = $(parent).find("p");
-                    $(child).text(value);
-                    
-                    
-                    var superParent = parent.parent();
-                    var unid = superParent.attr("name");
-                    console.log(unid + " " + value);
-                    
-                    $.get("/fastsearchLoc/" + unid + "/" + value).done(function (data) {
-                    
-                        console.log("Done");
-                    
-                    });
-                    
-                    
-                });
-            }); 
-       });
-    });
+    
+
 });
-
+$(document).ready( function() {
+    var x = document.getElementById("table").rows[2].cells;
+    x[3].innerHTML = "NEW CONTENT";
+});
 </script>
 
 </html>
