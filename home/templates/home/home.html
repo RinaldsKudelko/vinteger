@@ -122,9 +122,12 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
+
+
 items = [
-    {item: "wallboard", x: 1, y: 2},
-    {item: "bituthene", x: 8, y: 4},
+    {% for i in data %}
+    {item: "{{ i.product }}" + "<br>" + "{{ i.loc }}" + "<br>" + "{{ i.pickloc }}", x: "{{ i.xpos }}", y: "{{i.ypos}}"},  
+    {% endfor %}    
 ];
 
 items.forEach(({item, x, y}) => {
