@@ -25,11 +25,11 @@
             
             </div>
             
-            <div>
+            <div id = "table-container">
 
                 <table id = "table">
 
-                    <tr><!--L-->
+                    <tr class = "table-row"><!--L-->
                         <td class = "table-data">46L</td>
                         <td class = "table-data">44L</td>
                         <td class = "table-data">42L</td>
@@ -43,7 +43,7 @@
                         <td class = "table-data">26L</td>
                     </tr>
 
-                    <tr><!--K-->
+                    <tr class = "table-row"><!--K-->
                         <td class = "table-data">46K</td>
                         <td class = "table-data">44K</td>
                         <td class = "table-data">42K</td>
@@ -56,7 +56,7 @@
                         <td class = "table-data">28K</td>
                         <td class = "table-data">26K</td>
                     </tr>
-                    <tr><!--J-->
+                    <tr class = "table-row"><!--J-->
                         <td class = "table-data">46J</td>
                         <td class = "table-data">44J</td>
                         <td class = "table-data">42J</td>
@@ -69,7 +69,7 @@
                         <td class = "table-data">28J</td>
                         <td class = "table-data">26J</td>
                     </tr>
-                    <tr><!--H-->
+                    <tr class = "table-row"><!--H-->
                         <td class = "table-data">46H</td>
                         <td class = "table-data">44H</td>
                         <td class = "table-data">42H</td>
@@ -82,7 +82,7 @@
                         <td class = "table-data">28H</td>
                         <td class = "table-data">26H</td>
                     </tr>
-                    <tr><!--G-->
+                    <tr class = "table-row"><!--G-->
                         <td class = "table-data">46G</td>
                         <td class = "table-data">44G</td>
                         <td class = "table-data">42G</td>
@@ -95,7 +95,7 @@
                         <td class = "table-data">28G</td>
                         <td class = "table-data">26G</td>
                     </tr>
-                    <tr><!--F-->
+                    <tr class = "table-row"><!--F-->
                         <td class = "table-data">46F</td>
                         <td class = "table-data">44F</td>
                         <td class = "table-data">42F</td>
@@ -113,23 +113,33 @@
 
             </div>
             <div id = "mod-cell">
-                <table>
-                    <tr>
-                        <td><p>Location: </p></td>
-                        <td><p id = "loc">...</p></td>
-                    </tr>
-                    <tr>
-                        <td><p>Pick Location: </p></td>
-                        <td><p id = "picloc">...</p></td>
-                    </tr>
-                    <tr>
-                        <td><p>Product:</p>
-                        <td><p id = "product">...</p></td>
-                    </tr>
-                    <tr>
-                        <td><p id = "x">x</p></td>
-                        <td><p id = "y">y</p></td>
-                    </tr>
+                <table style = "width:100%;">
+                    
+                        <tr>
+                            
+                            <td><input class = "inp1" type = "text" id = "product1" placeholder="Product 1"></input></td>
+                        </tr>
+                        <tr>
+                            
+                            <td><input class = "inp1" type = "text" id = "picloc1" placeholder="Pick 1"></input></td>
+                        </tr>
+                        <tr>
+                            
+                            <td><input class = "inp1" type = "text" id = "product2" placeholder="Product 2"></input></td>
+                        </tr>
+                        <tr>
+                            
+                            <td><input class = "inp1" type = "text" id = "picloc2" placeholder="Pick 2"></input></td>
+                        </tr>
+                        
+                        <tr style = "display:none;">
+                            <td class = "inp1"><p id = "x">x</p></td>
+                            <td class = "inp1"><p id = "y">y</p></td>
+                        </tr>
+                        <tr>
+                            <td><input class = "inp1" type = "button" value = "Submit" onclick = "callserver()"></input></td>
+                        </tr>
+                    
                 </table>
             </div>
             <div id = "overlay"></div>
@@ -143,17 +153,77 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 
+function callserver(){
+    
+    var picloc1 = document.getElementById("picloc1").value;
+    var product1 = document.getElementById("product1").value;
+    var picloc2 = document.getElementById("picloc2").value;
+    var product2 = document.getElementById("product2").value;
+    var xp = document.getElementById("x").innerHTML;
+    var yp = document.getElementById("y").innerHTML;
+
+    console.log(picloc + product + xp + yp);
+
+    //$.get('/about/' + product + '/' + xp + '/' + yp).done(function (data){
+    //    console.log("call made" + data);
+    //});
+
+    $.ajax({
+        url: '/about/',
+        type: 'POST',
+        data: {
+            data1: picloc,
+            data2: product,
+            data3: xp,
+            data4: yp,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function(retr){
+            console.log(retr[0])
+            $("#overlay").css("display","none");
+            $("#mod-cell").css("display", "none");
+            items = [
+                
+                {
+                item: "<h4 class = 'product-name'>" + product + "</h4>" + "<br>" + "ignore" + "<br>" +"<p class = 'hid'>" + picloc + "</p>", //"change ignore to picloc"
+                x: xp, 
+                y: yp,
+                }  
+                   
+            ];
+
+            items.forEach(({item, x, y}) => {
+                var row = document.querySelectorAll('.table-row')[y];
+                console.log(y)
+                var cell = row.querySelectorAll('.table-data')[x];
+                console.log(x)
+                cell.innerHTML = item;   
+            });
+
+        }
+    });
+
+};
+
 
 items = [
     {% for i in data %}
-    {item: "{{ i.product }}" + "<br>" + "{{ i.loc }}" + "<br>" +"<p class = 'hid'>" + "{{ i.pickloc }}" + "</p>", x: "{{ i.xpos }}", y: "{{i.ypos}}"},  
+    {item: "<h4 style = 'text-align:center;padding:0;margin:0;'>" + '{{i.loc}}' + "/2" + "</h4>" 
+
+    + "<table class = 'inner-table'> <tr>" 
+    + "<td class = 'inner-data1'><h4 class = 'product-name'>" + "{{ i.value1 }}" + "</h4>" + "</td>"
+    + "<td class = 'inner-data2'><h4 class = 'product-name'>" + "{{ i.value2 }}" + "</h4>" + "</td>"
+    + "</table>"
+    + "<h4 style = 'text-align:center;padding:0;margin:0;'><a style = 'text-align:center;' href = '#'>Edit</a></h4>",
+
+    x: "{{ i.xpos }}", y: "{{i.ypos}}"},  
     {% endfor %}    
 ];
 
 items.forEach(({item, x, y}) => {
-    var row = document.querySelectorAll('tr')[y];
+    var row = document.querySelectorAll('.table-row')[y];
     console.log(y)
-    var cell = row.querySelectorAll('td')[x];
+    var cell = row.querySelectorAll('.table-data')[x];
     console.log(x)
     cell.innerHTML = item;   
     
@@ -163,14 +233,9 @@ items.forEach(({item, x, y}) => {
 $(document).ready( function() {
     
 
-    $(".table-data").hover( function() {
-        $(this).find("p").css("display", "inline");
-        
-    }, function(){
-        $(this).find("p").css("display", "none");
-
-    });
-    $(".table-data").mouseup( function(){
+  
+    
+    $("a").mouseup( function(){
         var row = $(this).closest("tr").index();
         var cell = $(this).index();
         console.log(cell + " " + row);
@@ -179,6 +244,12 @@ $(document).ready( function() {
         $("#x").text(cell);
         $("#y").text(row);
     });
+
+    $("#overlay").mouseup( function(){
+        $("#overlay").fadeOut(300);
+        $("#mod-cell").fadeOut(300);
+    })
+
 });
 </script>
 

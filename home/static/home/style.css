@@ -1,3 +1,5 @@
+
+
 #div{
     
     padding:20px;
@@ -15,89 +17,59 @@
     
 }
 
-.list-item {
-    color:white;
-    list-style-type:none;
-    display:inline-block;
-    font-size:30px;
-    padding:10px;
-    padding-left:40px;
-    padding-right:40px;
-    opacity:0.5;
-    
-    
-}
-
-
-.list-item:hover {
-    opacity:1.0;
-    cursor:default;
-}
-
-.text1 {
-    color:black;
-    
-}
-
-.content{
-    background-color:white;
-    border-radius:10px;
-    margin:20px;
-    padding:20px;
-    
-    
-}
-.author{
-    font-size:12px;
-    color:grey;
-    
-}
 
 .page-head{
     color:white;
 }
 
-.search-input{
-    background-color:white;
-    color:black;
-    border:solid 1px grey;
-    border-radius:5px;
-    padding:5px;
-    width:70%;
-    font-size:25px;
-    opacity:0.7;
-}
 
 .home-content{
     text-align:center;
     margin-top:30px;
 }
-
-
-td{
-    border:solid 1px black;
-    width:100px;
-    height:100px;
-    background-color:white;
-    opacity:1.0;
-    border-radius:10px;
+#table-container{
+    width:100%;
+    display:block;
+    overflow-x: scroll;
+    white-space: nowrap;
+    
+}
+#table{
+    width:max-content;
 }
 
-.table-data:hover{
-    width:150px;
-    height:150px;
-    position: absolute;
+.table-data{
+    border:solid 1px black;
+    width:300px;
+    height:140px;
+    background-color:rgb(255, 255, 255);
     opacity:1.0;
-    margin-right:100px;
+    border-radius:10px;
+   
+}
+.inner-table{
+    table-layout: fixed;
+}
+.inner-data1{
+    width:150px;
+    white-space: pre-wrap;
+    border-right: solid 1px black;
+    text-align:center;
+    
+}
+.inner-data2{
+    width:150px;
+    white-space: pre-wrap;
+    border-left: solid 1px black;
+    text-align:center;
     
 }
 
-.hid {
-    display:none;
-}
-#table{
-    width:100%;
-}
+
+
+
+
+
 
 #mod-cell{
     background-color:white;
@@ -109,6 +81,18 @@ td{
     left:5%;
     display:none;
     z-index: 99;
+    text-align: center;
+
+}
+
+.inp1{
+    font-size: 50px;
+    padding:5px;
+    margin:10px;
+    width:95%;
+    text-align: center;
+    border:1px solid rgb(172, 172, 172);
+    border-radius:5px;
 
 }
 #overlay{
@@ -120,4 +104,8 @@ td{
     top:0px;
     left:0px;
     display:none;
+}
+
+.product-name{
+    color:#33bbff;
 }
