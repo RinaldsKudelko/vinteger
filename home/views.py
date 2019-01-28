@@ -34,17 +34,19 @@ def home(request):
     return render(request, 'home/home.html', {"data":data})
 
 def about(request):
-    picloc = request.POST.get("data1")
-    product = request.POST.get("data2")
+    picloc1 = request.POST.get("data1")
+    product1 = request.POST.get("data2")
+    picloc2 = request.POST.get("data3")
+    product2 = request.POST.get("data4")
 
     
 
-    xp = request.POST.get("data3")
-    yp = request.POST.get("data4")
+    xp = request.POST.get("data5")
+    yp = request.POST.get("data6")
 
     conn = pymysql.connect(host = a, user = "root", password = "51379028", db = "database")
     cur = conn.cursor()
-    cur.execute("UPDATE locationindex SET value1 = %s, pick = %s WHERE x = %s AND y = %s",(product, picloc, xp, yp))
+    cur.execute("UPDATE locationindex SET value1 = %s, value2 = %s, pick1 = %s, pick2 = %s  WHERE x = %s AND y = %s",(product1, picloc1, product2, picloc2, xp, yp))
     conn.commit()
 
     

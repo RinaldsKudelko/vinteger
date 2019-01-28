@@ -133,6 +133,7 @@
                         </tr>
                         
                         <tr style = "display:none;">
+                            <td class = "inp1"><p id = "dummy">dummy</p></td>
                             <td class = "inp1"><p id = "x">x</p></td>
                             <td class = "inp1"><p id = "y">y</p></td>
                         </tr>
@@ -159,10 +160,13 @@ function callserver(){
     var product1 = document.getElementById("product1").value;
     var picloc2 = document.getElementById("picloc2").value;
     var product2 = document.getElementById("product2").value;
+    var dummy = document.getElementById("dummy").value;
+    
+
     var xp = document.getElementById("x").innerHTML;
     var yp = document.getElementById("y").innerHTML;
 
-    console.log(picloc + product + xp + yp);
+    
 
     //$.get('/about/' + product + '/' + xp + '/' + yp).done(function (data){
     //    console.log("call made" + data);
@@ -172,10 +176,12 @@ function callserver(){
         url: '/about/',
         type: 'POST',
         data: {
-            data1: picloc,
-            data2: product,
-            data3: xp,
-            data4: yp,
+            data1: picloc1,
+            data2: product1,
+            data3: picloc2,
+            data4: product2,
+            data5: xp,
+            data6: yp,
             csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         success: function(retr){
@@ -185,7 +191,14 @@ function callserver(){
             items = [
                 
                 {
-                item: "<h4 class = 'product-name'>" + product + "</h4>" + "<br>" + "ignore" + "<br>" +"<p class = 'hid'>" + picloc + "</p>", //"change ignore to picloc"
+                item: "<h4 style = 'text-align:center;padding:0;margin:0;'>" + dummy + "/2" + "</h4>" 
+
+                + "<table class = 'inner-table'> <tr>" 
+                + "<td class = 'inner-data1'><h4 class = 'product-name1'>" + product1 + "</h4>" + "</td>"
+                + "<td class = 'inner-data2'><h4 class = 'product-name2'>" + product2 + "</h4>" + "</td>"
+                + "</table>"
+                + "<h4 style = 'text-align:center;padding:0;margin:0;'><a style = 'text-align:center;' href = '#'>Edit</a></h4>",
+
                 x: xp, 
                 y: yp,
                 }  
@@ -211,8 +224,8 @@ items = [
     {item: "<h4 style = 'text-align:center;padding:0;margin:0;'>" + '{{i.loc}}' + "/2" + "</h4>" 
 
     + "<table class = 'inner-table'> <tr>" 
-    + "<td class = 'inner-data1'><h4 class = 'product-name'>" + "{{ i.value1 }}" + "</h4>" + "</td>"
-    + "<td class = 'inner-data2'><h4 class = 'product-name'>" + "{{ i.value2 }}" + "</h4>" + "</td>"
+    + "<td class = 'inner-data1'><h4 class = 'product-name1' value = '{{ i.value1 }}'>" + "{{ i.value1 }}" + "</h4>" + "</td>"
+    + "<td class = 'inner-data2'><h4 class = 'product-name2'>" + "{{ i.value2 }}" + "</h4>" + "</td>"
     + "</table>"
     + "<h4 style = 'text-align:center;padding:0;margin:0;'><a style = 'text-align:center;' href = '#'>Edit</a></h4>",
 
@@ -238,11 +251,17 @@ $(document).ready( function() {
     $("a").mouseup( function(){
         var row = $(this).closest("tr").index();
         var cell = $(this).index();
+        var location = $(this).closest("h4").text();
+        var placeholder1 = $(this).closest(".product-name1").text();
+        console.log(placeholder1 + location)
         console.log(cell + " " + row);
         $("#overlay").css("display","inline");
         $("#mod-cell").css("display", "inline");
+        $("dummy").text(location)
         $("#x").text(cell);
         $("#y").text(row);
+
+        
     });
 
     $("#overlay").mouseup( function(){
