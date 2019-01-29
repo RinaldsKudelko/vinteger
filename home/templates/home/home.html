@@ -132,7 +132,7 @@
                             <td><input class = "inp1" type = "text" id = "picloc2" placeholder="Pick 2"></input></td>
                         </tr>
                         
-                        <tr style = "display:none;">
+                        <tr>
                             <td class = "inp1"><p id = "dummy">dummy</p></td>
                             <td class = "inp1"><p id = "x">x</p></td>
                             <td class = "inp1"><p id = "y">y</p></td>
@@ -161,16 +161,14 @@ function callserver(){
     var picloc2 = document.getElementById("picloc2").value;
     var product2 = document.getElementById("product2").value;
     var dummy = document.getElementById("dummy").value;
+
+    var xp1 = document.getElementById("x").innerHTML;
+    var yp1 = document.getElementById("y").innerHTML;
+    var xp = xp1.replace(/'/g, "");
+    var yp = yp1.replace(/'/g, "");
     
 
-    var xp = document.getElementById("x").innerHTML;
-    var yp = document.getElementById("y").innerHTML;
-
     
-
-    //$.get('/about/' + product + '/' + xp + '/' + yp).done(function (data){
-    //    console.log("call made" + data);
-    //});
 
     $.ajax({
         url: '/about/',
@@ -185,7 +183,7 @@ function callserver(){
             csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         success: function(retr){
-            console.log(retr[0])
+            
             $("#overlay").css("display","none");
             $("#mod-cell").css("display", "none");
             items = [
@@ -193,12 +191,15 @@ function callserver(){
                 {
                 item: "<h4 style = 'text-align:center;padding:0;margin:0;'>" + dummy + "/2" + "</h4>" 
 
-                + "<table class = 'inner-table'> <tr>" 
-                + "<td class = 'inner-data1'><h4 class = 'product-name1'>" + product1 + "</h4>" + "</td>"
-                + "<td class = 'inner-data2'><h4 class = 'product-name2'>" + product2 + "</h4>" + "</td>"
+                + "<table class = 'inner-table'>" 
+                    + "<tr>" 
+                        + "<td class = 'inner-data1'><h4 class = 'product-name1'>" + product1 + "</h4>" + "</td>"
+                        + "<td class = 'inner-data2'><h4 class = 'product-name2'>" + product2 + "</h4>" + "</td>"
+                    + "</tr>"   
                 + "</table>"
-                + "<h4 style = 'text-align:center;padding:0;margin:0;'><a style = 'text-align:center;' href = '#'>Edit</a></h4>",
-
+                + "<a class = 'a' style = 'text-align:center;' href = '#'>Edit</a>"
+                +"<span id = 'xpos' style = 'display:none' value = "+ xp +">"+ xp +"</span>"
+                +"<span id = 'ypos' style = 'display:none' value = "+ yp +">"+ yp +"</span>",
                 x: xp, 
                 y: yp,
                 }  
@@ -207,9 +208,7 @@ function callserver(){
 
             items.forEach(({item, x, y}) => {
                 var row = document.querySelectorAll('.table-row')[y];
-                console.log(y)
                 var cell = row.querySelectorAll('.table-data')[x];
-                console.log(x)
                 cell.innerHTML = item;   
             });
 
@@ -221,13 +220,17 @@ function callserver(){
 
 items = [
     {% for i in data %}
-    {item: "<h4 style = 'text-align:center;padding:0;margin:0;'>" + '{{i.loc}}' + "/2" + "</h4>" 
+    {item: "<h4 class = 'loc-t' style = 'text-align:center;padding:0;margin:0;'>" + '{{i.loc}}' + "/2" + "</h4>" 
 
-    + "<table class = 'inner-table'> <tr>" 
-    + "<td class = 'inner-data1'><h4 class = 'product-name1' value = '{{ i.value1 }}'>" + "{{ i.value1 }}" + "</h4>" + "</td>"
-    + "<td class = 'inner-data2'><h4 class = 'product-name2'>" + "{{ i.value2 }}" + "</h4>" + "</td>"
-    + "</table>"
-    + "<h4 style = 'text-align:center;padding:0;margin:0;'><a style = 'text-align:center;' href = '#'>Edit</a></h4>",
+    + "<table class = 'inner-table'>" 
+        + "<tr>" 
+            + "<td class = 'inner-data1'><h4 class = 'product-name1' value = '{{ i.value1 }}'>" + "{{ i.value1 }}" + "</h4>" + "</td>"
+            + "<td class = 'inner-data2'><h4 class = 'product-name2'>" + "{{ i.value2 }}" + "</h4>" + "</td>"
+        + "</tr>"
+    +"</table>"
+    + "<a class = 'a' style = 'text-align:center;' href = '#'>Edit</a>"
+    +"<span id = 'xpos' style = 'display:none' value = '{{ i.xpos }}'>'{{ i.xpos }}'</span>"
+    +"<span id = 'ypos' style = 'display:none' value = '{{ i.ypos }}'>'{{ i.ypos }}'</span>",
 
     x: "{{ i.xpos }}", y: "{{i.ypos}}"},  
     {% endfor %}    
@@ -235,31 +238,42 @@ items = [
 
 items.forEach(({item, x, y}) => {
     var row = document.querySelectorAll('.table-row')[y];
-    console.log(y)
     var cell = row.querySelectorAll('.table-data')[x];
-    console.log(x)
     cell.innerHTML = item;   
-    
-    
-
 });
-$(document).ready( function() {
+
     
 
   
     
-    $("a").mouseup( function(){
-        var row = $(this).closest("tr").index();
-        var cell = $(this).index();
-        var location = $(this).closest("h4").text();
-        var placeholder1 = $(this).closest(".product-name1").text();
-        console.log(placeholder1 + location)
-        console.log(cell + " " + row);
+    $(".table-data").on("click", ".a", function(){
+        var x = $(this).next().text();
+        var y = $(this).next().next().text();
+        $.ajax({
+            url: '/celldata/',
+            type:"POST",
+            data:{
+                data1: x,
+                data2: y,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+        }).done(function(data){
+            
+            console.log(data.data)
+            $("#product1").val(data.data[0].value1)
+            $("#picloc1").val(data.data[0].pick1)
+            $("#product2").val(data.data[0].value2)
+            $("#picloc2").val(data.data[0].pick2)
+            var x = data.data[0].xpos;
+            var y = data.data[0].ypos;
+            console.log(x,y)
+        });
+        
+        
         $("#overlay").css("display","inline");
         $("#mod-cell").css("display", "inline");
-        $("dummy").text(location)
-        $("#x").text(cell);
-        $("#y").text(row);
+        $("#x").text(x);
+        $("#y").text(y);
 
         
     });
@@ -269,7 +283,7 @@ $(document).ready( function() {
         $("#mod-cell").fadeOut(300);
     })
 
-});
+
 </script>
 
 </html>

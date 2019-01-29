@@ -43,14 +43,46 @@ def about(request):
 
     xp = request.POST.get("data5")
     yp = request.POST.get("data6")
-
+    x = int(xp.replace("'", ""))
+    y=int(yp.replace("'", ""))
     conn = pymysql.connect(host = a, user = "root", password = "51379028", db = "database")
     cur = conn.cursor()
-    cur.execute("UPDATE locationindex SET value1 = %s, value2 = %s, pick1 = %s, pick2 = %s  WHERE x = %s AND y = %s",(product1, picloc1, product2, picloc2, xp, yp))
+    cur.execute("UPDATE locationindex SET value1 = %s, value2 = %s, pick1 = %s, pick2 = %s  WHERE x = %s AND y = %s",(product1, product2, picloc1, picloc2, x, y))
     conn.commit()
 
     
 
     
     return HttpResponse("nothing")
+
+
+def celldata(request):
+    row = request.POST.get("data1")
+    cell = request.POST.get("data2")
+    print(row, cell)
+    x = int(row.replace("'", ""))
+    y=int(cell.replace("'", ""))
+    conn = pymysql.connect(host = a, user = "root", password = "51379028", db = "database")
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM locationindex WHERE x = %s AND y = %s",(x, y))
+    
+    data = []
+    for i in cur:
+        values = {
+            "loc": i[0],
+            "xpos": i[1],
+            "ypos": i[2],
+            "value1": i[3],
+            "color1": i[5],
+            "pick1": i[7],
+            "value2": i[4],
+            "color2": i[6],
+            "pick2": i[8]
+            }
+        data.append(values)
+    
+
+    
+    
+    return JsonResponse({"data":data})
 # Create your views here.
