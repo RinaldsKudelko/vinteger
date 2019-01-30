@@ -132,7 +132,7 @@
                             <td><input class = "inp1" type = "text" id = "picloc2" placeholder="Pick 2"></input></td>
                         </tr>
                         
-                        <tr>
+                        <tr style = "display:none;">
                             <td class = "inp1"><p id = "dummy">dummy</p></td>
                             <td class = "inp1"><p id = "x">x</p></td>
                             <td class = "inp1"><p id = "y">y</p></td>
@@ -141,6 +141,24 @@
                             <td><input class = "inp1" type = "button" value = "Submit" onclick = "callserver()"></input></td>
                         </tr>
                     
+                </table>
+            </div>
+            <div>
+                <table id = "pickt" style = "color:black;border:1px solid black;background-color:white;width:100%;font-size:40px;text-align:center;">
+                    <tr style = "background-color:#ccffff; color:#6b6b6b;">
+                        <td>Pick</td>
+                        <td>Item</td>
+                        <td>Location</td>
+                        
+                    </tr>
+                    {% for i in data %}
+                    <tr class = "first-pos">
+                        <td style = "display:none;">{{ i.ypos }}</td><td style = "display:none;">{{ i.xpos }}</td><td class = "t1"> {{ i.pick1 }} </td><td> {{ i.value1 }} </td><td> {{ i.loc }} </td>
+                    </tr>
+                    <tr class = "secound-pos">
+                        <td style = "display:none;">{{ i.ypos }}</td><td style = "display:none;">{{ i.xpos }}</td><td class = "t2"> {{ i.pick2 }} </td><td> {{ i.value2 }} </td><td> {{ i.loc }} </td>
+                    </tr>
+                    {% endfor %}
                 </table>
             </div>
             <div id = "overlay"></div>
@@ -259,14 +277,14 @@ items.forEach(({item, x, y}) => {
             }
         }).done(function(data){
             
-            console.log(data.data)
+            
             $("#product1").val(data.data[0].value1)
             $("#picloc1").val(data.data[0].pick1)
             $("#product2").val(data.data[0].value2)
             $("#picloc2").val(data.data[0].pick2)
             var x = data.data[0].xpos;
             var y = data.data[0].ypos;
-            console.log(x,y)
+            
         });
         
         
@@ -283,6 +301,14 @@ items.forEach(({item, x, y}) => {
         $("#mod-cell").fadeOut(300);
     })
 
+
+    $(".t1").on("click", function(){
+        var valuex = $(this).prev().text();
+        var valuey = $(this).prev().prev().text();
+        console.log(valuex, valuey)
+        var colorc = document.getElementById("table").rows[valuey].cells[valuex];
+        $(colorc).css("background-color", "green")
+    });
 
 </script>
 
