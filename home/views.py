@@ -9,7 +9,7 @@ a = "94.10.26.6"
 def home(request):
     conn = pymysql.connect(host = a, user = "root", password = "51379028", db = "database")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM locationindex")
+    cur.execute("SELECT * FROM locationindex ORDER BY pick1, pick2 ASC")
 
     data = (dict(location = row[0], x = row[1], y = row[2], value1 = row[3], value2 = row[4], color1 = row[5], color2 = row[6], pick1 = row[7], pick2 = row[8]) for row in cur)
     
@@ -64,7 +64,7 @@ def celldata(request):
     y=int(cell.replace("'", ""))
     conn = pymysql.connect(host = a, user = "root", password = "51379028", db = "database")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM locationindex WHERE x = %s AND y = %s",(x, y))
+    cur.execute("SELECT * FROM locationindex WHERE x = %s AND y = %s ORDER BY pick1, pick2 ASC",(x, y))
     
     data = []
     for i in cur:

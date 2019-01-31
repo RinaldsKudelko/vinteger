@@ -65,10 +65,23 @@
     
 }
 
-
-
-
-
+#bot-tab{
+    
+    overflow-y: scroll;
+    
+    height:50vh;
+}
+#pickt{
+    border-collapse: collapse;
+}
+#pickt, .t12{
+    padding:10px;
+    border:1px solid rgb(146, 146, 146);
+}
+#pickt, .t22{
+    padding:10px;
+    border:1px solid rgb(146, 146, 146);
+}
 
 
 #mod-cell{

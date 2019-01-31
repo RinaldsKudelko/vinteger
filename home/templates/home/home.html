@@ -121,7 +121,7 @@
                         </tr>
                         <tr>
                             
-                            <td><input class = "inp1" type = "text" id = "picloc1" placeholder="Pick 1"></input></td>
+                            <td><input class = "inp1" type = "text" id = "picloc1" placeholder="Pick 1" onkeyup="this.value = this.value.toUpperCase();"></input></td>
                         </tr>
                         <tr>
                             
@@ -129,7 +129,7 @@
                         </tr>
                         <tr>
                             
-                            <td><input class = "inp1" type = "text" id = "picloc2" placeholder="Pick 2"></input></td>
+                            <td><input class = "inp1" type = "text" id = "picloc2" placeholder="Pick 2" onkeyup="this.value = this.value.toUpperCase();"></input></td>
                         </tr>
                         
                         <tr style = "display:none;">
@@ -143,7 +143,7 @@
                     
                 </table>
             </div>
-            <div>
+            <div id = "bot-tab">
                 <table id = "pickt" style = "color:black;border:1px solid black;background-color:white;width:100%;font-size:40px;text-align:center;">
                     <tr style = "background-color:#ccffff; color:#6b6b6b;">
                         <td>Pick</td>
@@ -153,10 +153,18 @@
                     </tr>
                     {% for i in data %}
                     <tr class = "first-pos">
-                        <td style = "display:none;">{{ i.ypos }}</td><td style = "display:none;">{{ i.xpos }}</td><td class = "t1"> {{ i.pick1 }} </td><td> {{ i.value1 }} </td><td> {{ i.loc }} </td>
+                        <td style = "display:none;">{{ i.ypos }}</td>
+                        <td style = "display:none;">{{ i.xpos }}</td>
+                        <td class = "t1 t12"> {{ i.pick1 }} </td>
+                        <td class = "t12"> {{ i.value1 }} </td>
+                        <td class = "t12"> {{ i.loc }} </td>
                     </tr>
                     <tr class = "secound-pos">
-                        <td style = "display:none;">{{ i.ypos }}</td><td style = "display:none;">{{ i.xpos }}</td><td class = "t2"> {{ i.pick2 }} </td><td> {{ i.value2 }} </td><td> {{ i.loc }} </td>
+                        <td style = "display:none;">{{ i.ypos }}</td>
+                        <td style = "display:none;">{{ i.xpos }}</td>
+                        <td class = "t2 t22"> {{ i.pick2 }} </td>
+                        <td class = "t22"> {{ i.value2 }} </td>
+                        <td class = "t22"> {{ i.loc }} </td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -299,16 +307,71 @@ items.forEach(({item, x, y}) => {
     $("#overlay").mouseup( function(){
         $("#overlay").fadeOut(300);
         $("#mod-cell").fadeOut(300);
-        consloe.log("test")
+        
+        
     })
 
-
+    var num1 = 0;
     $(".t1").on("click", function(){
+        if (num1 == 0){
+
+
+        $(this).css("background-color", "#e6ffe6")
+        var sib1 = $(this).next().css("background-color", "#e6ffe6")
+        var sib2 = $(this).next().next().css("background-color", "#e6ffe6")
         var valuex = $(this).prev().text();
         var valuey = $(this).prev().prev().text();
         console.log(valuex, valuey)
         var colorc = document.getElementById("table").rows[valuey].cells[valuex];
-        $(colorc).css("background-color", "green")
+        var test = $(colorc).find("table").find(".inner-data1");
+        $(test).css("background-color", "#e6ffe6");
+        num1 = 1
+        //$(colorc).css("background-color", "#e6ffe6")
+        } else {
+
+        $(this).css("background-color", "white")
+        var sib1 = $(this).next().css("background-color", "white")
+        var sib2 = $(this).next().next().css("background-color", "white")
+        var valuex = $(this).prev().text();
+        var valuey = $(this).prev().prev().text();
+        console.log(valuex, valuey)
+        var colorc = document.getElementById("table").rows[valuey].cells[valuex];
+        var test = $(colorc).find("table").find(".inner-data1");
+        $(test).css("background-color", "white");
+        num1 = 0
+        //$(colorc).css("background-color", "#e6ffe6")
+        }
+    
+        
+    });
+
+    var num2 = 0;
+    $(".t2").on("click", function(){
+
+        if (num2 == 0){
+        $(this).css("background-color", "#e6ffe6")
+        var sib1 = $(this).next().css("background-color", "#e6ffe6")
+        var sib2 = $(this).next().next().css("background-color", "#e6ffe6")
+        var valuex = $(this).prev().text();
+        var valuey = $(this).prev().prev().text();
+        console.log(valuex, valuey)
+        var colorc = document.getElementById("table").rows[valuey].cells[valuex];
+        var test = $(colorc).find("table").find(".inner-data2");
+        $(test).css("background-color", "#e6ffe6");
+        num2 = 1
+        } else {
+        $(this).css("background-color", "white")
+        var sib1 = $(this).next().css("background-color", "white")
+        var sib2 = $(this).next().next().css("background-color", "white")
+        var valuex = $(this).prev().text();
+        var valuey = $(this).prev().prev().text();
+        console.log(valuex, valuey)
+        var colorc = document.getElementById("table").rows[valuey].cells[valuex];
+        var test = $(colorc).find("table").find(".inner-data2");
+        $(test).css("background-color", "white");
+        num2 = 0
+        }
+        //$(colorc).css("background-color", "#e6ffe6")
     });
 
 </script>
